@@ -8,3 +8,7 @@
 
 # 進捗
 いまのとこ、1と4のロジックは組んだ
+
+# こんな感じ
+![ターミナル](http://i.imgur.com/NGCSCfu.jpg "サンプル")
+![twitter上](http://i.imgur.com/3V9p0S3.jpg "サンプル")
