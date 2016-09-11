@@ -14,7 +14,7 @@ import numpy as np
 import skimage
 import copy
 import scipy
-
+import twitter_getinfo
 
 
 
@@ -50,16 +50,17 @@ class StreamListener(StreamListener):
                 try:
                     urllib.urlretrieve(media_url, filename)
                 except IOError:
-                    print "保存に失敗しました"
-
+                    print "Failed"
                 frame = cv2.imread(filename)
                 img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
-                message = '.@'+status.author.screen_name+' 受け取った'
+                CameraLocation=twitter_getinfo.getcamerainfo()
+                LandscapeName = twitter_getinfo.getLandScapeinfo()
+                message = '.@'+status.author.screen_name+'Landscame is '+LandscapeName+', CameraLocation is '+CameraLocation
                 message = message.decode("utf-8")
                 try:
                     #画像をつけてリプライ
                     api.update_with_media(filename, status=message, in_reply_to_status_id=status.id)
+                    api.update_with_media
                 except TweepError, e:
                     print "error response code: " + str(e.response.status)
                     print "error message: " + str(e.response.reason)
@@ -68,7 +69,8 @@ class StreamListener(StreamListener):
 # streamingを始めるための準備
 auth = get_oauth()
 api = API(auth)
-
 stream = Stream(auth, StreamListener(), secure=True)
 print "Start Streaming!"
 stream.userstream()
+
+
