@@ -15,7 +15,7 @@ import skimage
 import copy
 import scipy
 import twitter_getinfo
-
+import urllib
 
 
 # エンコード設定
@@ -53,12 +53,35 @@ class StreamListener(StreamListener):
                     print "Failed"
                 frame = cv2.imread(filename)
                 img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                CameraLocation=twitter_getinfo.getcamerainfo()
-                LandscapeName = twitter_getinfo.getLandScapeinfo()
-                message = '.@'+status.author.screen_name+'Landscame is '+LandscapeName+', CameraLocation is '+CameraLocation
-                message = message.decode("utf-8")
+                #CameraLocation=twitter_getinfo.getcamerainfo()
+                print filename
+                print "Maching Start"
+                lat,lon,name,inf=twitter_getinfo.get_info(filename)
+                print "Maching Finished"
+                print lat
+                print lon
+                print name
+                print inf
+                key = "AIzaSyCmYl1wwZLoOslolQCPsH3ZMaN52yAVnO4"
+                lat = str(lat)
+                log = str(lon)
+                print "URL setting"
+                url ="http://maps.google.com/maps/api/staticmap?center=" +lat + "," + log + "&zoom=15.5&size=600x400&markers=" +lat + "%2C" + log + "&sensor=false&key=" + key+"&language=en"
+
+                #LandscapeName = twitter_getinfo.getLandScapeinfo()
+                #centername=KandaMyojin
+                #centername = urllib.quote(centername)
+                print url
+                mapapi = str(url)
+                print mapapi
+                message = '.@'+status.author.screen_name+' Landscame is '+str(name)+', CameraLocation is '+str(lat)+' , '+str(lon) +' ' + str(mapapi)
+                print message
+                #massege = str(massege)
+                #message = message.decode("utf-8")
+                print message
                 try:
                     #画像をつけてリプライ
+                    #api.update_status(str(message))
                     api.update_with_media(filename, status=message, in_reply_to_status_id=status.id)
                     api.update_with_media
                 except TweepError, e:
